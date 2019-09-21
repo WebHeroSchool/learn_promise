@@ -1,6 +1,14 @@
-const userName = "6thSence";
-const url = "https://api.github.com/users/";
-let gitUrl = url + userName;
+let param = new URLSearchParams(window.location.search);
+let userName = param.get("username");
+
+function getUrl(userName) {
+  const url = "https://api.github.com/users/";
+  if (userName !== null) {
+    return url + userName
+  } else {
+    return (url + "6thSence")
+  }
+}
 
 let getDate = new Promise((resolve, reject) => {
   setTimeout(() => {
@@ -13,7 +21,7 @@ let getUserInfo = new Promise((resolve, reject) => {
 });
 
 Promise.all([getDate, getUserInfo])
-  .then(userInfo => fetch(gitUrl))
+  .then(userInfo => fetch(getUrl(userName)))
   .then(result => result.json())
   .then(data => showUserInfo(data))
   .then(nowDate => showDate(nowDate))
